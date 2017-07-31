@@ -67,6 +67,7 @@ Variances and correlations
     - b13 = c(rep(-0.025,8),-0.075,-0.025), effect of U2 on cognitive slope
     
 Survival Probability Parameters
+
     - g0 = see `survInfo` above, log odds of death by Age(60,75,90) for reference group
     - g1 = c(rep(log(2),7),rep(log(sqrt(2)),2),log(2/sqrt(3))), log OR for effect of exposure (<high school) on death by Age(60,75,90)
     - g2 = c(0,rep(log(2),2),log(3),rep(0,6)), log OR for effect of U1 on death by Age(60,75,90)
