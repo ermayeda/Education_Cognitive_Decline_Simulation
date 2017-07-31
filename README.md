@@ -49,7 +49,7 @@ Study Sample
     - pexp = .4,    prevalence of < high school education in hypothetical population cohort of 20-year-olds
     - p = with(data.frame(survAge[1],survAge[2]), DeathP[Age==A]), probability of death by Age (60,75,90) for hypothetical population of 20-year olds
     
-Variances and correlations
+Variances and correlations for cognitive function
 
     - s2z0 = 0.2,    variance of random cognitive intercept
     - s2z1 = 0.005,  variance of random cognitive slope 
@@ -66,7 +66,7 @@ Variances and correlations
     - b12 = c(-0.025,rep(c(-0.025,-0.050,-0.025),2),rep(-0.025,3)), effect of U1 on cognitive slope
     - b13 = c(rep(-0.025,8),-0.075,-0.025), effect of U2 on cognitive slope
     
-Survival Probability Parameters
+Mortality Probability Parameters
 
     - g0 = see `survInfo` above, log odds of death by Age(60,75,90) for reference group
     - g1 = c(rep(log(2),7),rep(log(sqrt(2)),2),log(2/sqrt(3))), log OR for effect of exposure (<high school) on death by Age(60,75,90)
