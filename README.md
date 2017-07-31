@@ -31,7 +31,7 @@ Necessary R packages:
 - Contains one function: `SInputs(Age,survAge)`
 - Generates causal structure design matrix (scenMat), see script for further details.
 
-`survInfo`: a list containing cumulative mortality and log odds of death by Age(60,75,90) for reference group (g0) for each causal scenario. Cumulative mortality for each age is based on U.S. life tables for the 1929-1931 birth cohort (Arias, 2015). This is hardcoded. Cannot be changed without further work. Email author if you would like to explore different ages. 
+`survInfo`: a list containing cumulative mortality and log odds of death by Age(60,75,90) for reference group (g0) for each causal scenario. Cumulative mortality for each age is based on U.S. life tables for the 1929-1931 birth cohort (Arias, 2015); g0 values identified from previous simulations. This is hardcoded. Cannot be changed without further work. Email author if you would like to explore different ages. 
 
     - df60 = average g0 of S=2000 iterations of sample generation for each scenario (1:10)
     - df75 = average g0 of S=2000 iterations of sample generation for each scenario (1:10)
