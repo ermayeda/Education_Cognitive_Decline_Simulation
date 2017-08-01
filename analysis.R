@@ -23,12 +23,12 @@ simResults = function(B,M,I){
      dGS = subset(df,survU==1)
      sampSize = sample(dGS$id,size,replace = FALSE)
      dfSamp.long = subset(df.long,id%in%sampSize)
-     dfSamp = dfSamp.long[!duplicated(dfSamp$id),]
-     unExposed = subset(dfSampU,exposure==0)
-     Exposed = subset(dfSampU,exposure==1)
+     dfSamp = dfSamp.long[!duplicated(dfSamp.long$id),]
+     unExposed = subset(dfSamp,exposure==0)
+     Exposed = subset(dfSamp,exposure==1)
      
      ## run mixed effects model
-  f1 = lmer(measured_cogfxn~exposure*time+(time|id),data = dfSamp)
+  f1 = lmer(measured_cogfxn~exposure*time+(time|id),data = dfSamp.long)
   
     ## collect relevant output
   df.sum = data.frame(IScen = I,dG$tB, dG$g0,N,sum(dfSampU$survU),nrow(dfSamp)/nrow(dfSampU),
@@ -46,12 +46,14 @@ simResults = function(B,M,I){
                       t(diag(vcov(f1))^.5))
   }
   )))
-  tB1 = unlist(unique(simSum$tB))
+
   simSum = data.frame(apply(simSum,2,unlist))
   colnames(simSum) = c('IScen','trueB1','g0','N','SurvN','n.obs',"Exposed/N","SurvPerc",
                        'U1_TotalUnExp','U1_TotalExp','U1_SurvUnExp','U1_SurvExp',
                        'U2_TotalUnExp','U2_TotalExp','U2_SurvUnExp','U2_SurvExp',
                        'Int','Exposure','Slope','Exposure.Slope','sd.I','sd.EI','sd.time','sd.ET')
+    tB1 = unique(simSum$trueB1)
+  
   
   #####################################
   ### Calculate 95% CI and Coverage ###
