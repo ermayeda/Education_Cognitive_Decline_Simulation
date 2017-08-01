@@ -1,9 +1,9 @@
 ### analysis.R ###
 ## simResults() :
   ## source: data_gen.R
-  ## for each simulation 1:Bsim, dataGen() generates a random population of size N
-  ## select a random sample of size sampSize from those who survived to age (60,75,90) (2000)
-  ## fit mixed effect model 
+  ## for each iteration of sample generation, 1:Ssim, dataGen() generates a random population of size N
+  ## select a random sample of size sampSize from those who survived to Age(60,75,90) (2000)
+  ## fit linear mixed effect model for cognitive function, estimate total effect of education on rate of cognitive decline
   ## output relevant information
 ## writeResults():
   ## save output to working directory
@@ -14,8 +14,8 @@
 
 source('data_gen.R')
 
-simResults = function(B,M,I){
-  simSum = data.frame(t(sapply(1:B,function(b){
+simResults = function(S,M,I){
+  simSum = data.frame(t(sapply(1:S,function(b){
      dG = dataGen(M,I)
      size = dG$sampSize
      df.long = dG$df.long
@@ -89,5 +89,5 @@ return(fullresults)
 ## a function to run the simulation analysis
 
 writeResults = function(B,M = scenMat,I,A = Age){
-  r1 = simResults(B,M,I)
+  r1 = simResults(S,M,I)
   saveRDS(r1,file = paste0('results',I,'_Age',A,'.RDA',sep = ''))}
