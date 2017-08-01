@@ -7,12 +7,14 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
   param = paramGen(I,A)
   attach(param,warn.conflicts = FALSE)
   sV = sMatrix[Scenario,]
-  t.beta = trueB #total causal effect of education on annual rate of cognitive decline
+  t.beta = trueB #total causal effect of education (<high school) on annual rate of cognitive decline
   ## Create data frame of population
   df = data.frame(id = 1:N) 
+  
   # Step 1: Generate exposure variable with prevalence pexp by generating a U(0,1) distribution and setting exposure=0 if the random number<pexp, else exposure=1
   df$exposure = rbinom(N,1,pexp)
 
+  
   # Step 2a: Generate U1, a continuous time-constant variable, U~N(0,1) Alzheimer's disease polygenic risk score 
    df$U1 = rnorm(N,mean = 0,sd = 1)
    #df$U1 = scale(df$U1,center = TRUE, scale = TRUE) ## scale so we have mean zero, sd 1
@@ -23,8 +25,9 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
    df$U2 = with(df,c.param$a0*exposure + rnorm(n = N,mean = 0,sd = c.param$a.sd))
    #df$U2 = scale(df$U2,center = TRUE, scale = TRUE) ## scale so we have mean zero, sd 1
    
-   #Step 3: Generate death by Age(60,75,90) 
-   #First, Generate g0, log odds of death by Age(60,75,90) 
+  
+  # Step 3: Generate death by Age(60,75,90) 
+  # First, Generate g0, log odds of death by Age(60,75,90) 
    g0 = g.init
    #g0 = g0Gen(sV=sV,df = df,g = unname(unlist(s.param)),N=N,p = p, g.init = g.init)
 
@@ -33,15 +36,19 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
   
   df$survU = unlist(lapply(1:N,function(i){ifelse(runif(1)<df$p_surv65[i],0,1)}))
   
-  # Step 4: Generate random terms for cognitive slope and intercept, zeta_0i (z0i) and zeta_1i (z1i),where zeta_0i and zeta_1i covary
+  
+  # Step 4: Generate cognitive function values at each cognitive assessment. The study will include 7 cognitive assessment waves "int_time" years apart*/
+
+  # Generate random terms for cognitive slope and intercept, zeta_0i (z0i) and zeta_1i (z1i),where zeta_0i and zeta_1i covary
   Sig = matrix(unlist(b.err),nrow=2,ncol=2)
   df = data.frame(df,b = mvrnorm(N,mu = c(0,0),Sigma = Sig))
   
-  # Step 5: Generate autoregressive noise term (unexplained variance in Cij) for each visit
+  # Generate visit times
   time = seq(0,t.int*(n.obs-1),t.int)
   df.long = df[rep(seq_len(nrow(df)), each=n.obs),]
   df.long$time = rep(time,N)
   
+   # Generate autoregressive noise term (unexplained variance in Cij) for each visit
   df$alpha_ij = sqrt((1-a.err*a.err)*w.err)
 
   epsilon0 = rnorm(N,0,sqrt(w.err))
@@ -54,13 +61,13 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
   }
   #unlist(lapply(1:N,function(i){arima.sim(n = n.obs, list(ar = c(0.4, 0)),sd = w.err)})) # alternative way to calculate ar(1)
   
-  # Step 6: Generate "true" and "measured" cognitive function at each wave,where measured cognitive function = true cognitive function + error*/
+  # Generate "true" and "measured" cognitive function at each wave,where measured cognitive function = true cognitive function + error*/
   #Cij = b00 + b01*exposurei + b02*U1 + b03*U2+ (b10 + b11*exposurei + b12*U1 + b13*U2)*timeij+ z0i +z1i*timeij + epsilonij
   # Generate true cognitive function
   
   df.long$true_cogfxn  = with(df.long, f.param[[1]] +f.param[[2]]*exposure + f.param[[3]]*U1 + f.param[[4]]*U2 +(f.param[[5]] + f.param[[6]]*exposure +f.param[[7]]*U1+f.param[[8]]*U2)*time + b.1 +b.2*time + autoerr)
   
-  # Step 7: Generate measured cognitive function (true cognitive function measured with error)
+  # Generate measured cognitive function (true cognitive function measured with error)
   # C_ij = C_ij + error_ij
   # First, generate delta term (delta_ij = measurement error for Cij) for each visit
   
