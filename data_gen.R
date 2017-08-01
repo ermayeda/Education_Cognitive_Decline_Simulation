@@ -22,8 +22,8 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
    df$U2 = with(df,c.param$a0*exposure + rnorm(n = N,mean = 0,sd = c.param$a.sd))
    #df$U2 = scale(df$U2,center = TRUE, scale = TRUE) ## scale so we have mean zero, sd 1
    
-   #Step 3: Generate probability of death before  60,75,90
-   #Step 3a: Generate g0
+   #Step 3: Generate probability of death by Age(60,75,90)
+   #Step 4: Generate g0, log odds of death by Age(60,75,90) 
    
    g0 = g.init
    #g0 = g0Gen(sV=sV,df = df,g = unname(unlist(s.param)),N=N,p = p, g.init = g.init)
@@ -33,7 +33,7 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
   
   df$survU = unlist(lapply(1:N,function(i){ifelse(runif(1)<df$p_surv65[i],0,1)}))
   
-  # Step 5: Generate random terms for slope and intercept, zeta_0i (z0i) and zeta_1i (z1i),where zeta_0i and zeta_1i covary*/
+  # Step 5: Generate random terms for cognitive slope and intercept, zeta_0i (z0i) and zeta_1i (z1i),where zeta_0i and zeta_1i covary
   Sig = matrix(unlist(b.err),nrow=2,ncol=2)
   df = data.frame(df,b = mvrnorm(N,mu = c(0,0),Sigma = Sig))
   
@@ -56,8 +56,8 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
   #unlist(lapply(1:N,function(i){arima.sim(n = n.obs, list(ar = c(0.4, 0)),sd = w.err)})) # alternative way to calculate ar(1)
   
   # Step 7: Generate "true" and "measured" cognitive function at each wave,where measured cognitive function = true cognitive function + error*/
-  #Cij = b00 + b01*exposurei + b02*U1 + b03*U2+ (b10 + b11*exposurei + b12*U1 + b13*U2)*timeij+ z0i +z1i*timeij + epsilonij*/
-  # Generate true cognitive function*/
+  #Cij = b00 + b01*exposurei + b02*U1 + b03*U2+ (b10 + b11*exposurei + b12*U1 + b13*U2)*timeij+ z0i +z1i*timeij + epsilonij
+  # Generate true cognitive function
   
   df.long$true_cogfxn  = with(df.long, f.param[[1]] +f.param[[2]]*exposure + f.param[[3]]*U1 + f.param[[4]]*U2 +(f.param[[5]] + f.param[[6]]*exposure +f.param[[7]]*U1+f.param[[8]]*U2)*time + b.1 +b.2*time + autoerr)
   
