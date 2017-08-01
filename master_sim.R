@@ -15,7 +15,7 @@
 ##
 ## Age: Age of cohort analysis, used in analysis.R, parameter_gen.R, data_generation.R
 ##
-## Ssim: Number of iterations of sample generation to run 
+## Bsim: Number of iterations of sample generation to run 
 ##
 ## I: - a unique Causal Structure and input parameter combination (Scenario), ranges from 1:10. 
 ##    - Row I of simInputs is used to generate output file from parameterGeneration.R 
@@ -34,10 +34,10 @@ scenarios = 1:2 #for all scenarios set to 1:10
 
 source('analysis.R')
 
-## runs Ssim iterations of sample generation for cohort age 'Age' for Causal Structure and input parameter combination, 'scenarios'. 
+## runs Bsim iterations of sample generation for cohort age 'Age' for Causal Structure and input parameter combination, 'scenarios'. 
 
 sapply(scenarios,function(x){
-  writeResults(S = Ssim, M = scenMat, I = x, A = Age) #see above for description
+  writeResults(B = Bsim, M = scenMat, I = x, A = Age) #see above for description
   })
 
 #end
