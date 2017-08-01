@@ -4,7 +4,7 @@
 # the same working directory: parameter_gen.R, data_gen.R, analysis.R
 # Changes to all parameter settings can be made in the parameter_gen.R file. 
 # This master_sim.R script allows the user to input which scenarios (1:10) to run, which Age (60,75,90) to run
-# and how many simulations to run. 
+# and how many iterations of sample generation (S) to run. 
 
 ##################################
 ####### ~ Run Simulation ~ #######
@@ -15,9 +15,9 @@
 ##
 ## Age: Age of cohort analysis, used in analysis.R, parameter_gen.R, data_generation.R
 ##
-## Bsim: Number of simulations to run 
+## Ssim: Number of iterations of sample generation to run 
 ##
-## I: - a unique Causal Structure and Severity level combination (Scenario), ranges from 1:10. 
+## I: - a unique Causal Structure and input parameter combination (Scenario), ranges from 1:10. 
 ##    - Row I of simInputs is used to generate output file from parameterGeneration.R 
 ##    - See documentation for details on each level of I.
 ##
@@ -30,15 +30,14 @@
 
 
 Age = 90  
-Bsim = 5        # suggested to test with a small Bsim, after, run at Bsim>=1000
 scenarios = 1:2 #for all scenarios set to 1:10
 
 source('analysis.R')
 
-## runs Bsim simulations for cohort age 'Age' for Causal Structure and Severity level, 'scenarios'. 
+## runs Ssim iterations of sample generation for cohort age 'Age' for Causal Structure and input parameter combination, 'scenarios'. 
 
 sapply(scenarios,function(x){
-  writeResults(B = Bsim, M = scenMat, I = x, A = Age) #see above for description
+  writeResults(S = Ssim, M = scenMat, I = x, A = Age) #see above for description
   })
 
 #end
