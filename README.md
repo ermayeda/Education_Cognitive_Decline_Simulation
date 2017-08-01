@@ -19,7 +19,7 @@ Necessary R packages:
  - Assumes all R scripts are in the same working directory
  - Inputs:
      - Age: The age of your cohort, currently options are 60, 75, 90. These options can be expanded, however, additional work is necessary. 
-     - Ssim: Number of simulations you would like to run (2000)
+     - Bsim: Number of iterations of sample generation you would like to run (2000)
      
  - Outputs: 
      - output from simulation runs, a file saved out in current directory that specfices the age and scenario of the run in the title.
