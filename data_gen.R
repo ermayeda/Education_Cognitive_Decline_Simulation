@@ -7,16 +7,17 @@ dataGen = function(sMatrix = scenMat,I, A = Age){
   param = paramGen(I,A)
   attach(param,warn.conflicts = FALSE)
   sV = sMatrix[Scenario,]
-  t.beta = trueB
+  t.beta = trueB #total causal effect of education on annual rate of cognitive decline
   ## Create data frame of population
   df = data.frame(id = 1:N) 
   # Step 1: Generate exposure variable with prevalence pexp by generating a U(0,1) distribution and setting exposure=0 if the random number<pexp, else exposure=1
   df$exposure = rbinom(N,1,pexp)
+
   # Step 2a: Generate U1, a continuous time-constant variable, U~N(0,1) Alzheimer's disease polygenic risk score 
    df$U1 = rnorm(N,mean = 0,sd = 1)
    #df$U1 = scale(df$U1,center = TRUE, scale = TRUE) ## scale so we have mean zero, sd 1
    
-  # Step 2b: Generate U2, a continuous time-constant variable, U~N(0,1) main lifetime occupational complexity variable
+  # Step 2b: Generate U2, a continuous time-constant variable, U~N(0,1) main lifetime occupational complexity 
   # Effect of education on main lifetime occupational complexity, a0
    
    df$U2 = with(df,c.param$a0*exposure + rnorm(n = N,mean = 0,sd = c.param$a.sd))
