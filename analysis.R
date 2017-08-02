@@ -31,8 +31,8 @@ simResults = function(B,M,I){
   f1 = lmer(measured_cogfxn~exposure*time+(time|id),data = dfSamp.long)
   
     ## collect relevant output
-  df.sum = data.frame(IScen = I,dG$tB, dG$g0,N,sum(dfSampU$survU),nrow(dfSamp)/nrow(dfSampU),
-                      sum(dfSampU$exposure),
+  df.sum = data.frame(IScen = I,dG$tB, dG$g0,N,sum(dfSamp$survU),nrow(dfSamp)/nrow(dfSamp),
+                      sum(dfSamp$exposure),
                       round(sum(df$survU)/N*100,2),
                       U1_TotalUnExp = mean(subset(df,exposure==0)$U1),
                       U1_TotalExp = mean(subset(df,exposure==1)$U1),
