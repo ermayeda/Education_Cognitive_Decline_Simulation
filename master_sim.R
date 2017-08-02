@@ -28,8 +28,10 @@
 ##                  - saves file out as file = paste0('results',I,'_Age',Age,'.RDA',sep = ''))}
 ## set.seed(082173)  #un-comment and set a seed here if you would like 
 
-
+library(MASS)
+library(lme4)
 Age = 90  
+Bsim = 5        # suggested to test with a small Bsim, after, run at Bsim>=1000
 scenarios = 1:2 #for all scenarios set to 1:10
 
 source('analysis.R')
